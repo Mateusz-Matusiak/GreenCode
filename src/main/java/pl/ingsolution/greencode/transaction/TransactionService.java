@@ -17,7 +17,8 @@ import java.util.stream.Stream;
 public class TransactionService {
 
     public List<TransactionOutput> processTransactions(List<TransactionInput> transactions) {
-        Map<String, TransactionOutput> resultMap = prepareAccountsSummary(transactions);
+        log.debug("Starting to processing transactions");
+        final Map<String, TransactionOutput> resultMap = prepareAccountsSummary(transactions);
         transactions.forEach(transaction -> {
             resultMap.computeIfPresent(transaction.debitAccount(), (k, value) -> {
                 value.setBalance(value.getBalance() - transaction.amount());
@@ -31,10 +32,12 @@ public class TransactionService {
                 return value;
             });
         });
+        log.debug("Transactions processed");
         return resultMap.values().stream().sorted(Comparator.comparing(TransactionOutput::getAccount)).toList();
     }
 
     private Map<String, TransactionOutput> prepareAccountsSummary(List<TransactionInput> transactions) {
+        log.debug("Preparing accounts map");
         return transactions.stream().flatMap(t -> Stream.of(t.debitAccount(), t.creditAccount()))
                 .distinct()
                 .map(t -> new TransactionOutput(t, 0, 0, 0))
