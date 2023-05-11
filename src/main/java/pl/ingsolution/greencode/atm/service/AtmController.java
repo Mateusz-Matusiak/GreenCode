@@ -1,12 +1,15 @@
 package pl.ingsolution.greencode.atm.service;
 
 import com.github.javafaker.Faker;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.ingsolution.greencode.atm.service.dtos.ATM;
 import pl.ingsolution.greencode.atm.service.dtos.RequestType;
+import pl.ingsolution.greencode.atm.service.dtos.ServiceTasks;
 import pl.ingsolution.greencode.atm.service.dtos.Task;
 
 import java.util.ArrayList;
@@ -28,8 +31,8 @@ public record AtmController(
         return tasks;
     }
 
-    @PostMapping("/atms")
-    public List<ATM> calculateOrder(@RequestBody final List<Task> serviceTasks) {
-        return atmService.calculateOrder(serviceTasks);
+    @PostMapping("/atms/calculateOrder")
+    public List<ATM> calculateOrder(@RequestBody @Valid @NotNull final ServiceTasks tasks) {
+        return atmService.calculateOrder(tasks.tasks());
     }
 }

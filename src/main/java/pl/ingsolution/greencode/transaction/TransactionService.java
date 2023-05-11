@@ -2,8 +2,8 @@ package pl.ingsolution.greencode.transaction;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.ingsolution.greencode.transaction.dtos.TransactionInput;
-import pl.ingsolution.greencode.transaction.dtos.TransactionOutput;
+import pl.ingsolution.greencode.transaction.dtos.Transaction;
+import pl.ingsolution.greencode.transaction.dtos.Account;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,31 +16,31 @@ import java.util.stream.Stream;
 @Slf4j
 public class TransactionService {
 
-    public List<TransactionOutput> processTransactions(List<TransactionInput> transactions) {
+    public List<Account> processTransactions(List<Transaction> transactions) {
         log.debug("Starting to processing transactions");
-        final Map<String, TransactionOutput> resultMap = prepareAccountsSummary(transactions);
+        final Map<String, Account> accounts = prepareAccountsSummary(transactions);
         transactions.forEach(transaction -> {
-            resultMap.computeIfPresent(transaction.debitAccount(), (k, value) -> {
+            accounts.computeIfPresent(transaction.debitAccount(), (k, value) -> {
                 value.setBalance(value.getBalance() - transaction.amount());
                 value.setDebitCount(value.getDebitCount() + 1);
                 return value;
             });
 
-            resultMap.computeIfPresent(transaction.creditAccount(), (k, value) -> {
+            accounts.computeIfPresent(transaction.creditAccount(), (k, value) -> {
                 value.setBalance(value.getBalance() + transaction.amount());
                 value.setCreditCount(value.getCreditCount() + 1);
                 return value;
             });
         });
         log.debug("Transactions processed");
-        return resultMap.values().stream().sorted(Comparator.comparing(TransactionOutput::getAccount)).toList();
+        return accounts.values().stream().sorted(Comparator.comparing(Account::getAccount)).toList();
     }
 
-    private Map<String, TransactionOutput> prepareAccountsSummary(List<TransactionInput> transactions) {
+    private Map<String, Account> prepareAccountsSummary(List<Transaction> transactions) {
         log.debug("Preparing accounts map");
         return transactions.stream().flatMap(t -> Stream.of(t.debitAccount(), t.creditAccount()))
                 .distinct()
-                .map(t -> new TransactionOutput(t, 0, 0, 0))
-                .collect(Collectors.toMap(TransactionOutput::getAccount, Function.identity()));
+                .map(t -> new Account(t, 0, 0, 0))
+                .collect(Collectors.toMap(Account::getAccount, Function.identity()));
     }
 }
