@@ -8,11 +8,11 @@ public record Task(
         int atmId
 ) implements Comparable<Task> {
 
-    private static int compareRegion(Integer thisRegion, Integer otherRegion) {
+    private static int compareRegion(final Integer thisRegion, final Integer otherRegion) {
         return thisRegion.compareTo(otherRegion);
     }
 
-    private static int compareRequestType(RequestType thisRequest, RequestType otherRequest) {
+    private static int compareRequestType(final RequestType thisRequest, final RequestType otherRequest) {
         return Math.negateExact(thisRequest.compareTo(otherRequest));
     }
 

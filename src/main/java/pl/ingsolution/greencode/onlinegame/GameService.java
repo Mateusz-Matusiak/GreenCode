@@ -31,7 +31,7 @@ public class GameService {
 
     private void sortClansByPointsAndNumberOfPlayers(final List<Clan> clans) {
         clans.sort((o1, o2) -> {
-            int pointComparison = Integer.compare(o1.points(), o2.points());
+            final int pointComparison = Integer.compare(o1.points(), o2.points());
             if (pointComparison == 0) {
                 return Integer.compare(o1.numberOfPlayers(), o2.numberOfPlayers());
             }
