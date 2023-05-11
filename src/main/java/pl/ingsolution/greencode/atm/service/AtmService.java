@@ -11,7 +11,7 @@ import java.util.List;
 @Slf4j
 public class AtmService {
 
-    public List<ATM> calculateOrder(List<Task> serviceTasks) {
+    public List<ATM> calculateOrder(final List<Task> serviceTasks) {
         log.debug("Calculating order of ATM service");
         return serviceTasks.stream()
                 .sorted()

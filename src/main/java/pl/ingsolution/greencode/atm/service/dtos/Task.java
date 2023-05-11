@@ -3,9 +3,9 @@ package pl.ingsolution.greencode.atm.service.dtos;
 import java.util.Objects;
 
 public record Task(
-        Integer region,
+        int region,
         RequestType requestType,
-        Integer atmId
+        int atmId
 ) implements Comparable<Task> {
 
     private static int compareRegion(Integer thisRegion, Integer otherRegion) {
