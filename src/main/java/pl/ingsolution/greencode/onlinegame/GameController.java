@@ -1,8 +1,6 @@
 package pl.ingsolution.greencode.onlinegame;
 
 import com.github.javafaker.Faker;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +30,7 @@ public record GameController(
     }
 
     @PostMapping("/onlinegame/calculate")
-    public List<List<Clan>> onlineGameCalculate(@RequestBody @Valid @NotNull final Players players) {
+    public List<List<Clan>> onlineGameCalculate(@RequestBody final Players players) {
         return gameService.calculate(players.getClans(), players.getGroupCount());
     }
 }

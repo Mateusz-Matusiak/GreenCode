@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.ingsolution.greencode.onlinegame.dtos.Clan;
 import pl.ingsolution.greencode.onlinegame.dtos.Group;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
