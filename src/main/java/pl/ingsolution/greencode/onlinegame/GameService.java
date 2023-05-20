@@ -11,8 +11,9 @@ import java.util.*;
 @Slf4j
 public class GameService {
 
-    public List<List<Clan>> calculate(final List<Clan> clans, final int groupsCount) {
-        sortClansByPointsAndNumberOfPlayers(clans);
+    public final List<List<Clan>> calculate(final List<Clan> clans, final int groupsCount) {
+        Collections.sort(clans);
+
         final List<Group> assignedGroups = new ArrayList<>();
 
         clans.forEach(clan -> assignedGroups.stream()
@@ -26,15 +27,5 @@ public class GameService {
                         () -> assignedGroups.add(new Group(clan.numberOfPlayers(), new ArrayList<>(List.copyOf(List.of(clan)))))));
 
         return assignedGroups.stream().map(Group::getClans).toList();
-    }
-
-    private void sortClansByPointsAndNumberOfPlayers(final List<Clan> clans) {
-        clans.sort((o1, o2) -> {
-            final int pointComparison = Integer.compare(o1.points(), o2.points());
-            if (pointComparison == 0) {
-                return Integer.compare(o1.numberOfPlayers(), o2.numberOfPlayers());
-            }
-            return -pointComparison;
-        });
     }
 }
